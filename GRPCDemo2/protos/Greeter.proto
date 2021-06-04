@@ -1,0 +1,24 @@
+﻿syntax = "proto3";
+ 
+package Greeter;
+ 
+service Greet {
+	rpc SayHello (HelloRequest) returns (HelloReply);
+	rpc GetTime (TimeRequest) returns (TimeReply);
+}
+ 
+message HelloRequest {
+	string name = 1;
+}
+ 
+message HelloReply {
+	string message = 1;
+}
+
+
+message TimeRequest {
+}
+ 
+message TimeReply {
+	int64 stamp = 1;
+}
