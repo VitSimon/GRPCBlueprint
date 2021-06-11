@@ -40,5 +40,23 @@ namespace GRPCServer
             return Task.FromResult(new TimeReply { Stamp = DateTime.Now.Ticks });
         }
 
+        public override async Task GetRandomNumber(RanNumRequest request, IServerStreamWriter<RanNumReply> responseStream, ServerCallContext context)
+        {
+            int i = 0;
+
+            while (!context.CancellationToken.IsCancellationRequested || i < 20)
+            {
+                await Task.Delay(300);
+
+                RanNumReply reply = new RanNumReply
+                {
+                    Num = new Random().Next(200)
+                };
+
+                await responseStream.WriteAsync(reply);
+                i++;
+            }
+
+        }
     }
 }

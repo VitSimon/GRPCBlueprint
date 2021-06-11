@@ -5,6 +5,7 @@ package Greeter;
 service Greet {
 	rpc SayHello (HelloRequest) returns (HelloReply);
 	rpc GetTime (TimeRequest) returns (TimeReply);
+	rpc GetRandomNumber (RanNumRequest) returns (stream RanNumReply);
 }
  
 message HelloRequest {
@@ -21,4 +22,11 @@ message TimeRequest {
  
 message TimeReply {
 	int64 stamp = 1;
+}
+
+message RanNumRequest {
+}
+ 
+message RanNumReply {
+	int64 num = 1;
 }

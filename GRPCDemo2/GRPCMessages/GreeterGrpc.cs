@@ -46,6 +46,8 @@ namespace Greeter {
     static readonly grpc::Marshaller<global::Greeter.HelloReply> __Marshaller_Greeter_HelloReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.HelloReply.Parser));
     static readonly grpc::Marshaller<global::Greeter.TimeRequest> __Marshaller_Greeter_TimeRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.TimeRequest.Parser));
     static readonly grpc::Marshaller<global::Greeter.TimeReply> __Marshaller_Greeter_TimeReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.TimeReply.Parser));
+    static readonly grpc::Marshaller<global::Greeter.RanNumRequest> __Marshaller_Greeter_RanNumRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.RanNumRequest.Parser));
+    static readonly grpc::Marshaller<global::Greeter.RanNumReply> __Marshaller_Greeter_RanNumReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.RanNumReply.Parser));
 
     static readonly grpc::Method<global::Greeter.HelloRequest, global::Greeter.HelloReply> __Method_SayHello = new grpc::Method<global::Greeter.HelloRequest, global::Greeter.HelloReply>(
         grpc::MethodType.Unary,
@@ -60,6 +62,13 @@ namespace Greeter {
         "GetTime",
         __Marshaller_Greeter_TimeRequest,
         __Marshaller_Greeter_TimeReply);
+
+    static readonly grpc::Method<global::Greeter.RanNumRequest, global::Greeter.RanNumReply> __Method_GetRandomNumber = new grpc::Method<global::Greeter.RanNumRequest, global::Greeter.RanNumReply>(
+        grpc::MethodType.ServerStreaming,
+        __ServiceName,
+        "GetRandomNumber",
+        __Marshaller_Greeter_RanNumRequest,
+        __Marshaller_Greeter_RanNumReply);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -77,6 +86,11 @@ namespace Greeter {
       }
 
       public virtual global::System.Threading.Tasks.Task<global::Greeter.TimeReply> GetTime(global::Greeter.TimeRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task GetRandomNumber(global::Greeter.RanNumRequest request, grpc::IServerStreamWriter<global::Greeter.RanNumReply> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -138,6 +152,14 @@ namespace Greeter {
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetTime, null, options, request);
       }
+      public virtual grpc::AsyncServerStreamingCall<global::Greeter.RanNumReply> GetRandomNumber(global::Greeter.RanNumRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetRandomNumber(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncServerStreamingCall<global::Greeter.RanNumReply> GetRandomNumber(global::Greeter.RanNumRequest request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncServerStreamingCall(__Method_GetRandomNumber, null, options, request);
+      }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override GreetClient NewInstance(ClientBaseConfiguration configuration)
       {
@@ -151,7 +173,8 @@ namespace Greeter {
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_SayHello, serviceImpl.SayHello)
-          .AddMethod(__Method_GetTime, serviceImpl.GetTime).Build();
+          .AddMethod(__Method_GetTime, serviceImpl.GetTime)
+          .AddMethod(__Method_GetRandomNumber, serviceImpl.GetRandomNumber).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
@@ -162,6 +185,7 @@ namespace Greeter {
     {
       serviceBinder.AddMethod(__Method_SayHello, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Greeter.HelloRequest, global::Greeter.HelloReply>(serviceImpl.SayHello));
       serviceBinder.AddMethod(__Method_GetTime, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Greeter.TimeRequest, global::Greeter.TimeReply>(serviceImpl.GetTime));
+      serviceBinder.AddMethod(__Method_GetRandomNumber, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::Greeter.RanNumRequest, global::Greeter.RanNumReply>(serviceImpl.GetRandomNumber));
     }
 
   }
