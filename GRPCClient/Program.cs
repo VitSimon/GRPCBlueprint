@@ -22,7 +22,10 @@ namespace GRPCClient
             var replyTime = client.GetTime(new TimeRequest());
             Console.WriteLine($"Time is: {new DateTime(replyTime.Stamp)}");
 
-            GetNumbers(client);
+            {
+                Task t = GetNumbers(client);
+                t.Wait();
+            };
 
             channel.ShutdownAsync().Wait();
 
@@ -37,6 +40,7 @@ namespace GRPCClient
             {
                 using (AsyncServerStreamingCall<RanNumReply> streamingCall = client.GetRandomNumber(new RanNumRequest()))
                 {
+                    await Task.Delay(1000);
                     //while (streamingCall.GetStatus().StatusCode != Grpc.Core.StatusCode.Cancelled)
                     //{
                     while (await streamingCall.ResponseStream.MoveNext())

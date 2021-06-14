@@ -28,8 +28,11 @@ namespace GRPCServer
         }
     }
 
+
     class GreetImpl : Greet.GreetBase
     {
+        static Random ran = new Random();
+
         public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
         {
             return Task.FromResult(new HelloReply { Message = $"Hello {request.Name}" });
@@ -44,13 +47,15 @@ namespace GRPCServer
         {
             int i = 0;
 
-            while (!context.CancellationToken.IsCancellationRequested || i < 20)
+            while (
+                //!context.CancellationToken.IsCancellationRequested || 
+                i < 20)
             {
-                await Task.Delay(300);
+                //await Task.Delay(300);
 
                 RanNumReply reply = new RanNumReply
                 {
-                    Num = new Random().Next(200)
+                    Num = ran.Next(200)
                 };
 
                 await responseStream.WriteAsync(reply);
