@@ -63,5 +63,30 @@ namespace GRPCServer
             }
 
         }
+
+        public override async Task GetFactorial(IAsyncStreamReader<FactorialRequest> requestStream, IServerStreamWriter<FactorialReply> responseStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+                FactorialRequest far = requestStream.Current;
+                long num = far.Num;
+                long fanum = 1;
+
+                while (num > 1)
+                {
+                    fanum = fanum * (num);
+                    num--;
+
+                    FactorialReply fare = new FactorialReply()
+                    {
+                        BaseNum = far.Num,
+                        Num = fanum
+                    };
+
+                    await responseStream.WriteAsync(fare);
+                }
+
+            }
+        }
     }
 }

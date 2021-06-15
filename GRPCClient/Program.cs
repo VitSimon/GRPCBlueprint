@@ -27,6 +27,29 @@ namespace GRPCClient
                 t.Wait();
             };
 
+            List<long> requests = new List<long>() { 3, 5, 10 };
+
+            using (var call = client.GetFactorial())
+            {
+                var responseReaderTask = Task.Run(async () =>
+                {
+                    while (await call.ResponseStream.MoveNext())
+                    {
+                        FactorialReply far = call.ResponseStream.Current;
+                        Console.WriteLine("Base {0}: mid number {1}", far.BaseNum, far.Num);
+                    }
+                });
+
+                foreach (long request in requests)
+                {
+                    FactorialRequest fare = new FactorialRequest() { Num = request };
+
+                    call.RequestStream.WriteAsync(fare).Wait();
+                }
+                call.RequestStream.CompleteAsync().Wait();
+                responseReaderTask.Wait();
+            }
+
             channel.ShutdownAsync().Wait();
 
             Console.ReadLine();

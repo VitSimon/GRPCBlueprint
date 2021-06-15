@@ -48,6 +48,8 @@ namespace Greeter {
     static readonly grpc::Marshaller<global::Greeter.TimeReply> __Marshaller_Greeter_TimeReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.TimeReply.Parser));
     static readonly grpc::Marshaller<global::Greeter.RanNumRequest> __Marshaller_Greeter_RanNumRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.RanNumRequest.Parser));
     static readonly grpc::Marshaller<global::Greeter.RanNumReply> __Marshaller_Greeter_RanNumReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.RanNumReply.Parser));
+    static readonly grpc::Marshaller<global::Greeter.FactorialRequest> __Marshaller_Greeter_FactorialRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.FactorialRequest.Parser));
+    static readonly grpc::Marshaller<global::Greeter.FactorialReply> __Marshaller_Greeter_FactorialReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Greeter.FactorialReply.Parser));
 
     static readonly grpc::Method<global::Greeter.HelloRequest, global::Greeter.HelloReply> __Method_SayHello = new grpc::Method<global::Greeter.HelloRequest, global::Greeter.HelloReply>(
         grpc::MethodType.Unary,
@@ -70,6 +72,13 @@ namespace Greeter {
         __Marshaller_Greeter_RanNumRequest,
         __Marshaller_Greeter_RanNumReply);
 
+    static readonly grpc::Method<global::Greeter.FactorialRequest, global::Greeter.FactorialReply> __Method_GetFactorial = new grpc::Method<global::Greeter.FactorialRequest, global::Greeter.FactorialReply>(
+        grpc::MethodType.DuplexStreaming,
+        __ServiceName,
+        "GetFactorial",
+        __Marshaller_Greeter_FactorialRequest,
+        __Marshaller_Greeter_FactorialReply);
+
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
@@ -91,6 +100,11 @@ namespace Greeter {
       }
 
       public virtual global::System.Threading.Tasks.Task GetRandomNumber(global::Greeter.RanNumRequest request, grpc::IServerStreamWriter<global::Greeter.RanNumReply> responseStream, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task GetFactorial(grpc::IAsyncStreamReader<global::Greeter.FactorialRequest> requestStream, grpc::IServerStreamWriter<global::Greeter.FactorialReply> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -160,6 +174,14 @@ namespace Greeter {
       {
         return CallInvoker.AsyncServerStreamingCall(__Method_GetRandomNumber, null, options, request);
       }
+      public virtual grpc::AsyncDuplexStreamingCall<global::Greeter.FactorialRequest, global::Greeter.FactorialReply> GetFactorial(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return GetFactorial(new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncDuplexStreamingCall<global::Greeter.FactorialRequest, global::Greeter.FactorialReply> GetFactorial(grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncDuplexStreamingCall(__Method_GetFactorial, null, options);
+      }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override GreetClient NewInstance(ClientBaseConfiguration configuration)
       {
@@ -174,7 +196,8 @@ namespace Greeter {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_SayHello, serviceImpl.SayHello)
           .AddMethod(__Method_GetTime, serviceImpl.GetTime)
-          .AddMethod(__Method_GetRandomNumber, serviceImpl.GetRandomNumber).Build();
+          .AddMethod(__Method_GetRandomNumber, serviceImpl.GetRandomNumber)
+          .AddMethod(__Method_GetFactorial, serviceImpl.GetFactorial).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
@@ -186,6 +209,7 @@ namespace Greeter {
       serviceBinder.AddMethod(__Method_SayHello, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Greeter.HelloRequest, global::Greeter.HelloReply>(serviceImpl.SayHello));
       serviceBinder.AddMethod(__Method_GetTime, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Greeter.TimeRequest, global::Greeter.TimeReply>(serviceImpl.GetTime));
       serviceBinder.AddMethod(__Method_GetRandomNumber, serviceImpl == null ? null : new grpc::ServerStreamingServerMethod<global::Greeter.RanNumRequest, global::Greeter.RanNumReply>(serviceImpl.GetRandomNumber));
+      serviceBinder.AddMethod(__Method_GetFactorial, serviceImpl == null ? null : new grpc::DuplexStreamingServerMethod<global::Greeter.FactorialRequest, global::Greeter.FactorialReply>(serviceImpl.GetFactorial));
     }
 
   }
