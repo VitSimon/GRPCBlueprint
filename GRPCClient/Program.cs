@@ -16,7 +16,8 @@ namespace GRPCClient
         {
             Channel channel = new Channel("127.0.0.1:5555", ChannelCredentials.Insecure);
             var client = new Greet.GreetClient(channel);
-            var reply = client.SayHello(new HelloRequest { Name = "Auto" });
+            CallOptions o = new CallOptions();
+            var reply = client.SayHello(new HelloRequest { Name = "Auto" }, o);
             Console.WriteLine($"{reply.Message}");
 
             var replyTime = client.GetTime(new TimeRequest());
@@ -49,6 +50,50 @@ namespace GRPCClient
                 call.RequestStream.CompleteAsync().Wait();
                 responseReaderTask.Wait();
             }
+
+            new OneReqOneResp<HelloReply>()
+            {
+                Handler = (HelloReply r) =>
+                Console.WriteLine("Handling class:" + r.Message)
+            }.SendRequest(
+                () =>
+                {
+                    return client.SayHello(
+                        new HelloRequest() { Name = "Testicek" }
+                        );
+                }
+            );
+
+            new OneReqMoreResp<RanNumReply>()
+            {
+                Handler = (RanNumReply r) =>
+                {
+                    Console.WriteLine("Handling class: number: " + r.Num);
+                }
+            }.SendRequest(
+            () =>
+            {
+                return client.GetRandomNumber(new RanNumRequest());
+            }
+            );
+
+            new MoreReqMoreResp<FactorialRequest, FactorialReply>(
+                () =>
+                {
+                    return client.GetFactorial();
+                }
+                )
+            {
+                Handler = (FactorialReply r) =>
+                {
+                    Console.WriteLine("Handling class: factorial: " + r.Num);
+                }
+            }.SendRequest(
+                new FactorialRequest()
+                {
+                    Num = 5
+                }
+            );
 
             channel.ShutdownAsync().Wait();
 
