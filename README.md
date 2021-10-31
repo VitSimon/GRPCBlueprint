@@ -10,6 +10,10 @@ Simple demo implementation of GRPC in Csharp under .NET Framework 4.7.2.
 | GRPCClient | Client implementation |
 | GRPCServer | Server implementation |
 
+## TODO / Last news
+
+- [gRPC Csharp future library][FutureGRPCDotnetCore]
+
 ## NuGet dependencies
 
 - Google.Protobuf, 3.17.2
@@ -60,3 +64,4 @@ Consult packages.config.
 [GRPCIO1]: https://grpc.io/docs/languages/csharp/basics/ "GRPC.io: Basics tutorial C#"
 [CodeMartini1]: https://www.codemartini.com/grpc-net-core-sample-with-stream-call/ "CodeMartini1"
 [CapNProto]: https://capnproto.org/rpc.html "CapNProto"
+[FutureGRPCDotnetCore]: https://grpc.io/blog/grpc-csharp-future/
